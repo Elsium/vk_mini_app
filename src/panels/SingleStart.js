@@ -13,8 +13,10 @@ import {
 	ViewWidth
 } from "@vkontakte/vkui";
 import Locations from "./Locations";
+import bridge from "@vkontakte/vk-bridge";
 
 const SingleStart = (props) => {
+	const info = bridge.send("VKWebAppFlashGetInfo");
 	const [paused, setPaused] = React.useState(false);
 	const [over, setOver] = React.useState(false);
 	const [[m, s], setTime] = useState([props.singleTime, 0]);
@@ -24,6 +26,13 @@ const SingleStart = (props) => {
 		
 		else if (m === 0 && s === 0) {
 			setOver(true);
+			try {
+				if (info.data.is_available) {
+					bridge.send("VKWebAppFlashSetLevel", {"level": 0.5});
+				}
+			} catch (e) {
+			
+			}
 		} else if (s === 0) {
 			setTime([m - 1, 59]);
 		} else {
