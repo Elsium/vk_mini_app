@@ -21,6 +21,7 @@ import '@vkontakte/vkui/dist/vkui.css';
 import Locations from "./panels/Locations";
 import {Icon24Back, Icon28ChevronBack} from "@vkontakte/icons";
 import Single from "./panels/Single";
+import SingleStart from "./panels/SingleStart";
 
 const ROUTES = {
 	HOME: 'home',
@@ -28,6 +29,7 @@ const ROUTES = {
 	MULTI: 'multi',
 	LOCATIONS: 'locations',
 	RULES: 'rules',
+	SINGLE_START: 'singlestart',
 }
 const osName = platform();
 const styles = {
@@ -42,6 +44,8 @@ const styles = {
 
 const App = () => {
 	const [ activePanel, setActivePanel ] = useState(ROUTES.HOME);
+	const [ back, setBack ] = useState(null);
+	const [singleTime, setSingleTime] = useState(0);
 	const { viewWidth } = useAdaptivity();
 	
 	const single = () => {
@@ -54,6 +58,17 @@ const App = () => {
 	
 	const openLocations = () => {
 		setActivePanel(ROUTES.LOCATIONS);
+	}
+	
+	const startSingle = (time) => {
+		if (back) setBack(false);
+		setSingleTime(time);
+		setActivePanel(ROUTES.SINGLE_START);
+	}
+	
+	const openLocationsList = () => {
+		setActivePanel(ROUTES.LOCATIONS);
+		setBack(true);
 	}
 	
 	return (
@@ -105,7 +120,7 @@ const App = () => {
 								</Panel>
 								<Panel id="locations">
 									<PanelHeader
-										left={<PanelHeaderButton aria-label="Назад" onClick={openHome}>
+										left={<PanelHeaderButton aria-label="Назад" onClick={back ? startSingle : openHome}>
 											{osName === IOS ? <Icon28ChevronBack/> : <Icon24Back/>}
 										</PanelHeaderButton>}
 									>Шпион</PanelHeader>
@@ -117,7 +132,15 @@ const App = () => {
 											{osName === IOS ? <Icon28ChevronBack/> : <Icon24Back/>}
 										</PanelHeaderButton>}
 									>Шпион</PanelHeader>
-									<Single openHome={openHome}/>
+									<Single startSingle={startSingle}/>
+								</Panel>
+								<Panel id="singlestart">
+									<PanelHeader
+										left={<PanelHeaderButton aria-label="Назад" onClick={openHome}>
+											{osName === IOS ? <Icon28ChevronBack/> : <Icon24Back/>}
+										</PanelHeaderButton>}
+									>Шпион</PanelHeader>
+									<SingleStart singleTime={singleTime} openLocationsList={openLocationsList} openHome={openHome}/>
 								</Panel>
 							</View>
 						</SplitCol>

@@ -5,7 +5,7 @@ import {
 	SimpleCell} from '@vkontakte/vkui';
 import locations from '../data/locationData';
 
-const Locations = () => {
+const Locations = (props) => {
 	return (
 		<Group header={<Header mode="secondary">Локации</Header>}>
 			{locations.map( item => <SimpleCell style={{padding: 10, marginBottom: 5,}}>{item.name}</SimpleCell>)}

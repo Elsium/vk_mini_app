@@ -13,6 +13,7 @@ const Single = (props) => {
 	const [show, setShow] = useState(false);
 	const [spy, setSpy] = useState(0);
 	const [location, setLocation] = useState("");
+	const [timeM, setTimeM] = useState(3);
 	
 	function getRandomInRange(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -20,7 +21,7 @@ const Single = (props) => {
 	
 	const getRoles = () => {
 		if (count === 0) {
-			props.openHome();
+			props.startSingle(timeM);
 		} else {
 			setShow(!show)
 			setCount(count - 1);
@@ -28,6 +29,7 @@ const Single = (props) => {
 	}
 	const startGame = () => {
 		setStart(true);
+		setTimeM(count);
 		let tmp = getRandomInRange(1, count - 1 + 1);
 		setSpy(tmp);
 		setLocation(locations[getRandomInRange(0, 29)].name);
@@ -74,7 +76,7 @@ const Single = (props) => {
 					appearance={show ? 'negative' : 'positive'}
 					onClick={show || count === 0 ? getRoles : () => setShow(!show)}
 				>
-					{ count === 0 ? "Новая игра" : show ? "Следующий игрок" : "Показать роль"}
+					{ count === 0 ? "Поставить таймер" : show ? "Следующий игрок" : "Показать роль"}
 				</Button>
 			</Group>)
 	);
