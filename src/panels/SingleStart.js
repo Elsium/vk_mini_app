@@ -42,22 +42,24 @@ const SingleStart = (props) => {
 	
 	useEffect(() => {
 		const timerID = setInterval(() => tick(), 1000);
-		end(over || paused ? clearInterval(timerID) : false);
 		return () => clearInterval(timerID);
 	});
 	
-	const end = (call = true) => {
-		if (call) props.openHome();
-	}
 	const [active, setActive] = useState(null);
 	return (
-		<Group header={<Header>Игра идет</Header>}>
+		<Group header={<Header>{!paused && !over ? "Игра идет" : "Игра закончена"}</Header>}>
 			<div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
 				<Text
-					style={{fontSize: 30}}>{`${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`}</Text>
+					style={!paused && !over ? {fontSize: 30} : {display: 'none'}}>
+					{`${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`}
+				</Text>
+				<Text
+					style={!paused && !over ? {display: 'none'} : {fontSize: 26}}>
+					Шпионом был - {props.nameSpy}
+				</Text>
 			</div>
 			<div style={{display: 'flex', justifyContent: 'space-around', marginTop: 40}}>
-				<div style={{paddingLeft: 20, paddingRight: 20, width: '100%'}}>
+				<div style={!paused && !over ? {paddingLeft: 20, paddingRight: 20, width: '100%'} : {display: 'none'}}>
 					<Button
 						size="m"
 						stretched={true}
@@ -68,7 +70,7 @@ const SingleStart = (props) => {
 					<Button
 						size="m"
 						stretched={true}
-						onClick={() => setPaused(true)}
+						onClick={!paused && !over ? () => setPaused(true) : () => props.openHome()}
 					>Завершить</Button>
 				</div>
 			</div>

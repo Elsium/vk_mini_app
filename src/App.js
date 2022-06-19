@@ -46,6 +46,7 @@ const App = () => {
 	const [ activePanel, setActivePanel ] = useState(ROUTES.HOME);
 	const [ back, setBack ] = useState(null);
 	const [singleTime, setSingleTime] = useState(0);
+	const [nameSpy, setNameSpy] = useState("");
 	const { viewWidth } = useAdaptivity();
 	
 	const single = () => {
@@ -60,9 +61,10 @@ const App = () => {
 		setActivePanel(ROUTES.LOCATIONS);
 	}
 	
-	const startSingle = (time) => {
+	const startSingle = (time, nameSpy) => {
 		if (back) setBack(false);
 		setSingleTime(time);
+		setNameSpy(nameSpy);
 		setActivePanel(ROUTES.SINGLE_START);
 	}
 	
@@ -113,7 +115,7 @@ const App = () => {
 												mode="secondary"
 												size="l"
 											>
-												Правила
+												Добавить свои локации
 											</Button>
 										</Div>
 									</Div>
@@ -140,7 +142,7 @@ const App = () => {
 											{osName === IOS ? <Icon28ChevronBack/> : <Icon24Back/>}
 										</PanelHeaderButton>}
 									>Шпион</PanelHeader>
-									<SingleStart singleTime={singleTime} openLocationsList={openLocationsList} openHome={openHome}/>
+									<SingleStart singleTime={singleTime} nameSpy={nameSpy} openLocationsList={openLocationsList} openHome={openHome}/>
 								</Panel>
 							</View>
 						</SplitCol>
